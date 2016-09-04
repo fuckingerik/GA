@@ -10,11 +10,17 @@ Learning to throw a basketball using GA
 # Constants
 ################################################
 g = 9.82
-xTarget = 14
-yTarget = 6
+xTarget = 4.185
+yTarget = 3.048
 
-xRing = [13,15]
-yRing = [6,6]
+#Ring meassurements
+xRing = [3.96, 4.41]
+yRing = [3.048, 3.048]
+ringRad = 0.225
+thickRad = 0.0085
+
+#baskettball
+rad = 0.125
 
 ################################################
 # GA functions
@@ -24,7 +30,7 @@ def fitness(x, y, xv):
     Calcualtes the fitness of a solution
     """
     dist, i = minDist(x, y)
-    return dist + abs(xv[i])
+    return dist #+ abs(xv[i])
 
 def minDist(x, y):
     dists  = [0]*len(x)
@@ -79,16 +85,19 @@ def childFromParents(father, mother, fitf, fitm):
 def runGA():
     popSize = 100
     bestSize = 20
-    numGen = 10
+    numGen = 5
     betsPerGen = []
     stopTime = 4
     timeStep = 0.1
 
-    pop = firstPopulation(0, 15, 0, np.pi/2, popSize)
+    pop = firstPopulation(0, 10, 0, np.pi/2, popSize)
     for i in range(numGen):
         fits = []
+        plt.figure(num=i, figsize=(20, 25), dpi=80, facecolor='w', edgecolor='k')
         for j in range(popSize):
             x, y, xv =  calcMotion(pop[j][1], pop[j][0], stopTime, timeStep)
+            plt.plot(x,y,'b--')
+            plt.draw()
             fits.append(fitness(x, y, xv))
         fits = np.array(fits)
         topI = topIndividuals(fits, bestSize)
@@ -96,16 +105,16 @@ def runGA():
         for ind in topI:
             bestPop.append(pop[ind])
         xb, yb, xvb = calcMotion(pop[topI[0]][1], pop[topI[0]][0], stopTime, timeStep)
-        plt.plot(xb, yb, label="Generation: %d"%i)
+        plt.plot(xb, yb, 'r--', label='Best. Angle = %f, Vel = %f'%(pop[topI[0]][1], pop[topI[0]][0]))
         plt.draw()
         pop = formPairs(bestPop, popSize)
-    plt.xlabel("x [m]")
-    plt.ylabel("y [m]")
-    plt.legend()
-    plt.plot(xRing, yRing, label="ring")
-    plt.ylim([0,10])
-    plt.xlim([0,20])
-    plt.show()
+        plt.xlabel("x [m]")
+        plt.ylabel("y [m]")
+        plt.plot(xRing, yRing, 'r', label="Generation, %d"%i)
+        plt.legend()
+        plt.ylim([0,5])
+        plt.xlim([0,10])
+        plt.show()
 
         
 
@@ -144,6 +153,12 @@ def calcMotion(v0, theta, stopTime, timeStep):
         yPosition.append(yPos(t, v0, theta))
         xVelocity.append(xVel(t, v0, theta))
     return(xPosition, yPosition, xVelocity)
+
+def checkCollision(objectList):
+    """
+    Checks for colission between the ball and other objects
+    """
+    
 
 def run():
     """
