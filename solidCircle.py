@@ -1,13 +1,15 @@
 import numpy as np
+from solidObject import solidObject
 
 class solidCircle(solidObject):
     """
     Defines some basic properties of the circle
     """
-    def __init__(self, x, y, r):
+    def __init__(self, x, y, r, cons=1):
         self.x = x
         self.y = y
         self.r = r
+        self.cons = cons
 
     def hasCollision(self, x, y, r):
         """
@@ -23,13 +25,11 @@ class solidCircle(solidObject):
         """
         return the normal vector of the collision point
         """
-        print("Child specific")
+        xC = x - self.x
+        yC = y - self.y
+        mag = np.sqrt(xC**2 + yC**2)
+        return (xC/mag, yC/mag)
 
-    def collisionPoint(self, x, y, r):
-        """
-        Finds the closest point of the boundary and the circle of radius r at point (x,y)
-        """
-        
 
     def dist(self, x, y):
         d = np.sqrt((x - self.x)**2 + (y - self.y)**2)
