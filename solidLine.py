@@ -58,3 +58,6 @@ class solidLine(solidObject):
     def dist(self, x, y):
         d = np.sqrt((x - self.x)**2 + (y - self.y)**2)
         return d
+
+    def drawToScreen(self, screen):
+        

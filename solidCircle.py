@@ -1,6 +1,9 @@
 import numpy as np
+import pygame
 from solidObject import solidObject
 
+RED = (255, 0, 0)
+WHITE = (255, 255, 255)
 class solidCircle(solidObject):
     """
     Defines some basic properties of the circle
@@ -34,3 +37,6 @@ class solidCircle(solidObject):
     def dist(self, x, y):
         d = np.sqrt((x - self.x)**2 + (y - self.y)**2)
         return d
+
+    def drawToScreen(self, screen):
+        pygame.draw.circle(screen, RED, [self.x, self.y], self.r)

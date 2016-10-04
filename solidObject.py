@@ -25,3 +25,9 @@ class solidObject:
         Finds the closest point of the boundary and the circle of radius r at point (x,y)
         """
         print("Child specific")
+
+    def drawToScreen(self, screen):
+        """
+        Draws object to the screen
+        """
+        print("Child specific")
